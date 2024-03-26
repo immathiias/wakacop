@@ -4,8 +4,9 @@ import academy.wakanda.wakacop.pauta.application.repository.PautaRepository;
 import academy.wakanda.wakacop.pauta.domain.Pauta;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
+
+import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
@@ -18,6 +19,15 @@ public class PautaInfraRepository implements PautaRepository {
         log.info("[start] PautaInfraRepository - salva");
         pautaSpringDataJPARepository.save(pauta);
         log.info("[finish] PautaInfraRepository - salva");
+        return pauta;
+    }
+
+    @Override
+    public Pauta buscaPautaPorId(UUID idPauta) {
+        log.info("[start] PautaInfraRepository - buscaPautaPorId");
+        Pauta pauta = pautaSpringDataJPARepository.findById(idPauta)
+                .orElseThrow(() -> new RuntimeException("Pauta não encontrada."));
+        log.info("[finish] PautaInfraRepository - buscaPautaPorId");
         return pauta;
     }
 }
